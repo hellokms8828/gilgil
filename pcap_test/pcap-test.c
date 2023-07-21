@@ -63,10 +63,10 @@ struct libnet_tcp_hdr
     u_int16_t th_dport;       /* destination port */
     u_int32_t th_seq;          /* sequence number */
     u_int32_t th_ack;          /* acknowledgement number */
-#if (LIBNET_LIL_ENDIAN)
+//#if (LIBNET_LIL_ENDIAN)
     u_int8_t th_x2:4,         /* (unused) */
            th_off:4;        /* data offset */
-#endif
+//#endif
 #if (LIBNET_BIG_ENDIAN)
     u_int8_t th_off:4,        /* data offset */
            th_x2:4;         /* (unused) */
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
 		struct libnet_ethernet_hdr* eth_hdr = (struct libnet_ethernet_hdr*)packet;
         	struct libnet_ipv4_hdr* ip4_hdr = (struct libnet_ipv4_hdr*)(packet + sizeof(struct libnet_ethernet_hdr));
         	struct libnet_tcp_hdr* tcp_hdr = (struct libnet_tcp_hdr*)(packet + sizeof(struct libnet_ethernet_hdr) + sizeof(struct libnet_ipv4_hdr));
-		u_int8_t* payload = (u_int8_t*) (packet + sizeof(struct libnet_ethernet_hdr) + sizeof(struct libnet_ipv4_hdr) + sizeof(struct libnet_tcp_hdr));
+		u_int8_t* payload = (u_int8_t*) (packet + sizeof(struct libnet_ethernet_hdr) + sizeof(struct libnet_ipv4_hdr) + (tcp_hdr->th_off * 4));
 		if(ip4_hdr->ip_p != 6){
                         continue;
                 }
